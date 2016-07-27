@@ -1,1 +1,1 @@
-# Polaris Authentication client Library
+# Polaris Authentication Client Library
