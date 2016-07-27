@@ -32,9 +32,8 @@ var AuthClient = (function () {
     AuthClient.getClientAppHeaderField = function () { return AuthClient.CLIENT_APP_HEADER_FLD; };
     // POST
     AuthClient.prototype.$P = function (path, data, done) {
-        var headers = {
-            'x-client-app': JSON.stringify(this.clientAppSettings)
-        };
+        var headers = {};
+        headers[AuthClient.CLIENT_APP_HEADER_FLD] = JSON.stringify(this.clientAppSettings);
         this.$J('POST', this.options.baseUrl + path, data, done, headers, this.options.rejectUnauthorized);
     };
     AuthClient.prototype.getConnectedApp = function (done) {

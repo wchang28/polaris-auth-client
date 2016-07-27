@@ -69,9 +69,8 @@ export class AuthClient {
 	static getClientAppHeaderField():string {return AuthClient.CLIENT_APP_HEADER_FLD;}
 	// POST
 	private $P(path:string, data: any, done:(err:any, ret:any) => void) {
-		let headers = {
-			'x-client-app': JSON.stringify(this.clientAppSettings)
-		};
+		let headers = {};
+		headers[AuthClient.CLIENT_APP_HEADER_FLD] = JSON.stringify(this.clientAppSettings);
 		this.$J('POST', this.options.baseUrl + path, data, done, headers, this.options.rejectUnauthorized);
 	}
 	getConnectedApp(done:(err:any, connectedApp:IConnectedApp) => void) {
