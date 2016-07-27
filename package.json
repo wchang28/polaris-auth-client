@@ -1,0 +1,22 @@
+{
+  "name": "polaris-auth-client",
+  "version": "0.0.1",
+  "description": "Polaris Authetication Client Library",
+  "main": "./js/AuthClient.js",
+  "typings": "./js/AuthClient.d.ts",
+  "scripts": {
+  },
+  "keywords": [
+    "authentication"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wchang28/polaris-auth-serv.git"
+  },
+  "author": "Wen Chang",
+  "license": "MIT",
+  "dependencies": {
+    "ajaxon": "git+https://github.com/wchang28/ajaxon.git",
+    "oauth2": "git+https://github.com/wchang28/oauth2.git"
+  }
+}
