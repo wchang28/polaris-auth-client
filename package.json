@@ -1,6 +1,6 @@
 {
   "name": "polaris-auth-client",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Polaris Authentication Client Library",
   "main": "./js/AuthClient.js",
   "typings": "./js/AuthClient.d.ts",
@@ -17,6 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "ajaxon": "git+https://github.com/wchang28/ajaxon.git",
-    "oauth2": "git+https://github.com/wchang28/oauth2.git"
+    "oauth2": "git+https://github.com/wchang28/oauth2.git",
+    "rest-api-interfaces": "git+https://github.com/wchang28/rest-api-interfaces.git"
   }
 }

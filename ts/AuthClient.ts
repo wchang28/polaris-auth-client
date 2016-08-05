@@ -1,10 +1,6 @@
 import {getAJaxon, IAjaxon} from 'ajaxon';
 import * as oauth2 from 'oauth2';
-
-export interface IAuthorizeEndpointOptions {
-	baseUrl:string;
-	rejectUnauthorized?:boolean
-}
+import * as restIntf from 'rest-api-interfaces';
 
 export interface IConnectedApp {
 	client_id: string;
@@ -47,7 +43,7 @@ export interface IRefreshTokenParams {
 export class AuthClient {
 	private $J: IAjaxon = null;
 	private static CLIENT_APP_HEADER_FLD: string = 'x-client-app';
-	constructor(jQuery:any, public options:IAuthorizeEndpointOptions, public clientAppSettings:oauth2.ClientAppSettings) {
+	constructor(jQuery:any, public options:restIntf.ConnectOptions, public clientAppSettings:oauth2.ClientAppSettings) {
 		this.$J = getAJaxon(jQuery);
 	}
 	get redirect_uri():string {return this.clientAppSettings.redirect_uri;}
@@ -71,7 +67,7 @@ export class AuthClient {
 	private $P(path:string, data: any, done:(err:any, ret:any) => void) {
 		let headers = {};
 		headers[AuthClient.CLIENT_APP_HEADER_FLD] = JSON.stringify(this.clientAppSettings);
-		this.$J('POST', this.options.baseUrl + path, data, done, headers, this.options.rejectUnauthorized);
+		this.$J('POST', this.options.instance_url + path, data, done, headers, this.options.rejectUnauthorized);
 	}
 	getConnectedApp(done:(err:any, connectedApp:IConnectedApp) => void) {
 		this.$P("/services/authorize/get_connected_app", {}, (err:any, connectedApp: IConnectedApp) => {
