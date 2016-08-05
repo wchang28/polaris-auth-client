@@ -1,8 +1,5 @@
 import * as oauth2 from 'oauth2';
-export interface IAuthorizeEndpointOptions {
-    baseUrl: string;
-    rejectUnauthorized?: boolean;
-}
+import * as restIntf from 'rest-api-interfaces';
 export interface IConnectedApp {
     client_id: string;
     name: string;
@@ -35,11 +32,11 @@ export interface IRefreshTokenParams {
     refresh_token: string;
 }
 export declare class AuthClient {
-    options: IAuthorizeEndpointOptions;
+    options: restIntf.ConnectOptions;
     clientAppSettings: oauth2.ClientAppSettings;
     private $J;
     private static CLIENT_APP_HEADER_FLD;
-    constructor(jQuery: any, options: IAuthorizeEndpointOptions, clientAppSettings: oauth2.ClientAppSettings);
+    constructor(jQuery: any, options: restIntf.ConnectOptions, clientAppSettings: oauth2.ClientAppSettings);
     redirect_uri: string;
     getError(httpErr: any): any;
     static getClientAppHeaderField(): string;
