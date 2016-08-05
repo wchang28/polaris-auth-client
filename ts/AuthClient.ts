@@ -2,6 +2,8 @@ import {getAJaxon, IAjaxon} from 'ajaxon';
 import * as oauth2 from 'oauth2';
 import * as restIntf from 'rest-api-interfaces';
 
+export {ConnectOptions as IAuthorizeEndpointOptions} from 'rest-api-interfaces';
+
 export interface IConnectedApp {
 	client_id: string;
 	name: string;
