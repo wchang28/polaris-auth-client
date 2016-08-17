@@ -36,7 +36,7 @@ export declare class AuthClient {
     options: restIntf.ConnectOptions;
     clientAppSettings: oauth2.ClientAppSettings;
     private static CLIENT_APP_HEADER_FLD;
-    constructor(jQuery: any, options: restIntf.ConnectOptions, clientAppSettings: oauth2.ClientAppSettings);
+    constructor(options: restIntf.ConnectOptions, clientAppSettings: oauth2.ClientAppSettings);
     instance_url: string;
     redirect_uri: string;
     getError(httpErr: any): any;

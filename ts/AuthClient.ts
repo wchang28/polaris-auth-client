@@ -46,7 +46,7 @@ export interface IRefreshTokenParams {
 
 export class AuthClient {
 	private static CLIENT_APP_HEADER_FLD: string = 'x-client-app';
-	constructor(jQuery:any, public options:restIntf.ConnectOptions, public clientAppSettings:oauth2.ClientAppSettings) {}
+	constructor(public options:restIntf.ConnectOptions, public clientAppSettings:oauth2.ClientAppSettings) {}
 	get instance_url():string {return (this.options && this.options.instance_url ? this.options.instance_url : '');}
 	get redirect_uri():string {return (this.clientAppSettings && this.clientAppSettings.redirect_uri ? this.clientAppSettings.redirect_uri : null);}
 	getError(httpErr) {

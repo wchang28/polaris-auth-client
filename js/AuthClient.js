@@ -1,7 +1,7 @@
 var $node = require('rest-node');
 var $J = $node.get().$J;
 var AuthClient = (function () {
-    function AuthClient(jQuery, options, clientAppSettings) {
+    function AuthClient(options, clientAppSettings) {
         this.options = options;
         this.clientAppSettings = clientAppSettings;
     }
