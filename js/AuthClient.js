@@ -1,13 +1,17 @@
-var ajaxon_1 = require('ajaxon');
+var $node = require('rest-node');
+var $J = $node.get().$J;
 var AuthClient = (function () {
     function AuthClient(jQuery, options, clientAppSettings) {
         this.options = options;
         this.clientAppSettings = clientAppSettings;
-        this.$J = null;
-        this.$J = ajaxon_1.getAJaxon(jQuery);
     }
+    Object.defineProperty(AuthClient.prototype, "instance_url", {
+        get: function () { return (this.options && this.options.instance_url ? this.options.instance_url : ''); },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(AuthClient.prototype, "redirect_uri", {
-        get: function () { return this.clientAppSettings.redirect_uri; },
+        get: function () { return (this.clientAppSettings && this.clientAppSettings.redirect_uri ? this.clientAppSettings.redirect_uri : null); },
         enumerable: true,
         configurable: true
     });
@@ -30,11 +34,24 @@ var AuthClient = (function () {
             return null;
     };
     AuthClient.getClientAppHeaderField = function () { return AuthClient.CLIENT_APP_HEADER_FLD; };
+    Object.defineProperty(AuthClient.prototype, "connectOptions", {
+        get: function () {
+            var ret = {
+                headers: {}
+            };
+            ret.headers[AuthClient.CLIENT_APP_HEADER_FLD] = JSON.stringify(this.clientAppSettings);
+            if (this.options && typeof this.options.rejectUnauthorized)
+                ret.rejectUnauthorized = this.options.rejectUnauthorized;
+            return ret;
+        },
+        enumerable: true,
+        configurable: true
+    });
     // POST
     AuthClient.prototype.$P = function (path, data, done) {
         var headers = {};
         headers[AuthClient.CLIENT_APP_HEADER_FLD] = JSON.stringify(this.clientAppSettings);
-        this.$J('POST', this.options.instance_url + path, data, done, headers, this.options.rejectUnauthorized);
+        $J('POST', this.instance_url + path, data, done, this.connectOptions);
     };
     AuthClient.prototype.getConnectedApp = function (done) {
         var _this = this;

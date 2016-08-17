@@ -1,6 +1,8 @@
-import {getAJaxon, IAjaxon} from 'ajaxon';
+import * as $node from 'rest-node';
 import * as oauth2 from 'oauth2';
 import * as restIntf from 'rest-api-interfaces';
+
+let $J = $node.get().$J;
 
 export {ConnectOptions as IAuthorizeEndpointOptions} from 'rest-api-interfaces';
 
@@ -43,12 +45,10 @@ export interface IRefreshTokenParams {
 }
 
 export class AuthClient {
-	private $J: IAjaxon = null;
 	private static CLIENT_APP_HEADER_FLD: string = 'x-client-app';
-	constructor(jQuery:any, public options:restIntf.ConnectOptions, public clientAppSettings:oauth2.ClientAppSettings) {
-		this.$J = getAJaxon(jQuery);
-	}
-	get redirect_uri():string {return this.clientAppSettings.redirect_uri;}
+	constructor(jQuery:any, public options:restIntf.ConnectOptions, public clientAppSettings:oauth2.ClientAppSettings) {}
+	get instance_url():string {return (this.options && this.options.instance_url ? this.options.instance_url : '');}
+	get redirect_uri():string {return (this.clientAppSettings && this.clientAppSettings.redirect_uri ? this.clientAppSettings.redirect_uri : null);}
 	getError(httpErr) {
 		if (httpErr) {
 			if (httpErr.responseJSON)
@@ -65,11 +65,19 @@ export class AuthClient {
 			return null;
 	}
 	static getClientAppHeaderField():string {return AuthClient.CLIENT_APP_HEADER_FLD;}
+	private get connectOptions(): restIntf.ApiCallOptions {
+		let ret: restIntf.ApiCallOptions = {
+			headers: {}
+		}
+		ret.headers[AuthClient.CLIENT_APP_HEADER_FLD] = JSON.stringify(this.clientAppSettings);
+		if (this.options && typeof this.options.rejectUnauthorized) ret.rejectUnauthorized = this.options.rejectUnauthorized;
+		return ret;
+	}
 	// POST
 	private $P(path:string, data: any, done:(err:any, ret:any) => void) {
 		let headers = {};
 		headers[AuthClient.CLIENT_APP_HEADER_FLD] = JSON.stringify(this.clientAppSettings);
-		this.$J('POST', this.options.instance_url + path, data, done, headers, this.options.rejectUnauthorized);
+		$J('POST', this.instance_url + path, data, done, this.connectOptions);
 	}
 	getConnectedApp(done:(err:any, connectedApp:IConnectedApp) => void) {
 		this.$P("/services/authorize/get_connected_app", {}, (err:any, connectedApp: IConnectedApp) => {

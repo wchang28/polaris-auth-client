@@ -35,12 +35,13 @@ export interface IRefreshTokenParams {
 export declare class AuthClient {
     options: restIntf.ConnectOptions;
     clientAppSettings: oauth2.ClientAppSettings;
-    private $J;
     private static CLIENT_APP_HEADER_FLD;
     constructor(jQuery: any, options: restIntf.ConnectOptions, clientAppSettings: oauth2.ClientAppSettings);
+    instance_url: string;
     redirect_uri: string;
     getError(httpErr: any): any;
     static getClientAppHeaderField(): string;
+    private connectOptions;
     private $P(path, data, done);
     getConnectedApp(done: (err: any, connectedApp: IConnectedApp) => void): void;
     userLogin(response_type: oauth2.AuthResponseType, username: string, password: string, signUpUserForApp: boolean, done: (err: any, ret: ILoginResult) => void): void;
