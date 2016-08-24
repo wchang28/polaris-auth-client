@@ -142,25 +142,25 @@ export class AuthClient {
 		});
 	}
 
-	SSPR(username:string, done:(err:any, data:any) => void) {
+	SSPR(username:string, done:(err:any, params:IResetPasswordParams) => void) {
 		let params: IUsernameParams = {username};
 		this.$P("/services/authorize/sspr", params, (err, data) => {
 			if (typeof done === 'function') done(this.getError(err), data);
 		});
 	}
-	resetPassword(pin:string, done:(err:any, data:any) => void) {
+	resetPassword(pin:string, done:(err:any) => void) {
 		let params:IResetPasswordParams = {pin};
 		this.$P("/services/authorize/reset_password", params, (err, data) => {
-			if (typeof done === 'function') done(this.getError(err), data);
+			if (typeof done === 'function') done(this.getError(err));
 		});
 	}
-	lookupUser(username:string, done:(err:any, data:any) => void) {
+	lookupUser(username:string, done:(err:any, user:IAuthorizedUser) => void) {
 		let params: IUsernameParams = {username};
 		this.$P("/services/authorize/lookup_user", params, (err, data) => {
 			if (typeof done === 'function') done(this.getError(err), data);
 		});		
 	}
-	signUpNewUser(accountOptions:IAccountOptions, done:(err:any, data:any) => void) {
+	signUpNewUser(accountOptions:IAccountOptions, done:(err:any, user:IAuthorizedUser) => void) {
 		let params = accountOptions;
 		this.$P("/services/authorize/sign_up_new_user", params, (err, data) => {
 			if (typeof done === 'function') done(this.getError(err), data);

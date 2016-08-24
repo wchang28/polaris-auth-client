@@ -121,7 +121,7 @@ var AuthClient = (function () {
         var params = { pin: pin };
         this.$P("/services/authorize/reset_password", params, function (err, data) {
             if (typeof done === 'function')
-                done(_this.getError(err), data);
+                done(_this.getError(err));
         });
     };
     AuthClient.prototype.lookupUser = function (username, done) {

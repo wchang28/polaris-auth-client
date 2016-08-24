@@ -65,8 +65,8 @@ export declare class AuthClient {
     getAccessFromAuthCode(code: string, done: (err: any, access: oauth2.Access) => void): void;
     refreshToken(refresh_token: string, done: (err: any, access: oauth2.Access) => void): void;
     verifyAccessToken(accessToken: oauth2.AccessToken, done: (err: any, user: IAuthorizedUser) => void): void;
-    SSPR(username: string, done: (err: any, data: any) => void): void;
-    resetPassword(pin: string, done: (err: any, data: any) => void): void;
-    lookupUser(username: string, done: (err: any, data: any) => void): void;
-    signUpNewUser(accountOptions: IAccountOptions, done: (err: any, data: any) => void): void;
+    SSPR(username: string, done: (err: any, params: IResetPasswordParams) => void): void;
+    resetPassword(pin: string, done: (err: any) => void): void;
+    lookupUser(username: string, done: (err: any, user: IAuthorizedUser) => void): void;
+    signUpNewUser(accountOptions: IAccountOptions, done: (err: any, user: IAuthorizedUser) => void): void;
 }
