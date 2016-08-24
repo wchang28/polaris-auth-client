@@ -32,6 +32,22 @@ export interface IGetAccessFromCodeParams {
 export interface IRefreshTokenParams {
     refresh_token: string;
 }
+export interface IUsernameParams {
+    username: string;
+}
+export interface IResetPasswordParams {
+    pin: string;
+}
+export interface IAccountOptions {
+    firstName: string;
+    lastName: string;
+    email: string;
+    username: string;
+    password: string;
+    companyName?: string;
+    mobilePhone?: string;
+    promotionalMaterial?: boolean;
+}
 export declare class AuthClient {
     options: restIntf.ConnectOptions;
     clientAppSettings: oauth2.ClientAppSettings;
@@ -52,5 +68,5 @@ export declare class AuthClient {
     SSPR(username: string, done: (err: any, data: any) => void): void;
     resetPassword(pin: string, done: (err: any, data: any) => void): void;
     lookupUser(username: string, done: (err: any, data: any) => void): void;
-    signUpNewUser(accountOptions: any, done: (err: any, data: any) => void): void;
+    signUpNewUser(accountOptions: IAccountOptions, done: (err: any, data: any) => void): void;
 }

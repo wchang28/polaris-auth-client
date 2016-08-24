@@ -110,7 +110,7 @@ var AuthClient = (function () {
     };
     AuthClient.prototype.SSPR = function (username, done) {
         var _this = this;
-        var params = { 'username': username };
+        var params = { username: username };
         this.$P("/services/authorize/sspr", params, function (err, data) {
             if (typeof done === 'function')
                 done(_this.getError(err), data);
@@ -118,7 +118,7 @@ var AuthClient = (function () {
     };
     AuthClient.prototype.resetPassword = function (pin, done) {
         var _this = this;
-        var params = { 'pin': pin };
+        var params = { pin: pin };
         this.$P("/services/authorize/reset_password", params, function (err, data) {
             if (typeof done === 'function')
                 done(_this.getError(err), data);
@@ -126,7 +126,7 @@ var AuthClient = (function () {
     };
     AuthClient.prototype.lookupUser = function (username, done) {
         var _this = this;
-        var params = { 'username': username };
+        var params = { username: username };
         this.$P("/services/authorize/lookup_user", params, function (err, data) {
             if (typeof done === 'function')
                 done(_this.getError(err), data);

@@ -44,6 +44,25 @@ export interface IRefreshTokenParams {
 	refresh_token: string;
 }
 
+export interface IUsernameParams {
+	username: string;
+}
+
+export interface IResetPasswordParams {
+	pin: string;
+}
+
+export interface IAccountOptions {
+	firstName: string
+	,lastName: string
+	,email: string
+	,username: string
+	,password: string
+	,companyName?: string
+	,mobilePhone?: string
+	,promotionalMaterial?: boolean;
+}
+
 export class AuthClient {
 	private static CLIENT_APP_HEADER_FLD: string = 'x-client-app';
 	constructor(public options:restIntf.ConnectOptions, public clientAppSettings:oauth2.ClientAppSettings) {}
@@ -124,24 +143,24 @@ export class AuthClient {
 	}
 
 	SSPR(username:string, done:(err:any, data:any) => void) {
-		let params = {'username' : username};
+		let params: IUsernameParams = {username};
 		this.$P("/services/authorize/sspr", params, (err, data) => {
 			if (typeof done === 'function') done(this.getError(err), data);
 		});
 	}
 	resetPassword(pin:string, done:(err:any, data:any) => void) {
-		let params = {'pin' : pin};
+		let params:IResetPasswordParams = {pin};
 		this.$P("/services/authorize/reset_password", params, (err, data) => {
 			if (typeof done === 'function') done(this.getError(err), data);
 		});
 	}
 	lookupUser(username:string, done:(err:any, data:any) => void) {
-		let params = {'username' : username};
+		let params: IUsernameParams = {username};
 		this.$P("/services/authorize/lookup_user", params, (err, data) => {
 			if (typeof done === 'function') done(this.getError(err), data);
 		});		
 	}
-	signUpNewUser(accountOptions:any, done:(err:any, data:any) => void) {
+	signUpNewUser(accountOptions:IAccountOptions, done:(err:any, data:any) => void) {
 		let params = accountOptions;
 		this.$P("/services/authorize/sign_up_new_user", params, (err, data) => {
 			if (typeof done === 'function') done(this.getError(err), data);
