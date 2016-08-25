@@ -1,6 +1,6 @@
 {
   "name": "polaris-auth-client",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Polaris Authentication Client Library",
   "main": "./js/AuthClient.js",
   "typings": "./js/AuthClient.d.ts",

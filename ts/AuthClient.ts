@@ -11,6 +11,7 @@ export interface IConnectedApp {
 	name: string;
 	allow_reset_pswd: boolean;
 	allow_create_new_user: boolean;
+	allow_auto_app_sign_up: boolean;
 }
 
 export interface IAuthorizedUser {
