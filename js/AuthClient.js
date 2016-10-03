@@ -1,3 +1,4 @@
+"use strict";
 var $node = require('rest-node');
 var $J = $node.get().$J;
 var AuthClient = (function () {

@@ -54,11 +54,11 @@ export declare class AuthClient {
     clientAppSettings: oauth2.ClientAppSettings;
     private static CLIENT_APP_HEADER_FLD;
     constructor(options: restIntf.ConnectOptions, clientAppSettings: oauth2.ClientAppSettings);
-    instance_url: string;
-    redirect_uri: string;
+    readonly instance_url: string;
+    readonly redirect_uri: string;
     getError(httpErr: any): any;
     static getClientAppHeaderField(): string;
-    private connectOptions;
+    private readonly connectOptions;
     private $P(path, data, done);
     getConnectedApp(done: (err: any, connectedApp: IConnectedApp) => void): void;
     userLogin(response_type: oauth2.AuthResponseType, username: string, password: string, signUpUserForApp: boolean, done: (err: any, ret: ILoginResult) => void): void;
