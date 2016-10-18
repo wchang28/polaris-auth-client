@@ -70,3 +70,12 @@ export declare class AuthClient {
     lookupUser(username: string, done: (err: any, user: IAuthorizedUser) => void): void;
     signUpNewUser(accountOptions: IAccountOptions, done: (err: any, user: IAuthorizedUser) => void): void;
 }
+export declare class TokenVerifier {
+    options: restIntf.ConnectOptions;
+    constructor(options: restIntf.ConnectOptions);
+    getError(httpErr: any): any;
+    readonly instance_url: string;
+    private readonly connectOptions;
+    private $P(path, data, done);
+    verifyAccessToken(accessToken: oauth2.AccessToken, done: (err: any, user: IAuthorizedUser) => void): void;
+}

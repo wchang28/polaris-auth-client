@@ -161,7 +161,7 @@ export class AuthClient {
 	};
 }
 
-class TokenVerifier {
+export class TokenVerifier {
 	constructor(public options:restIntf.ConnectOptions) {}
 	getError(httpErr) {
 		if (httpErr) {

@@ -189,3 +189,4 @@ var TokenVerifier = (function () {
     };
     return TokenVerifier;
 }());
+exports.TokenVerifier = TokenVerifier;
