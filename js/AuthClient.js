@@ -50,8 +50,6 @@ var AuthClient = (function () {
     });
     // POST
     AuthClient.prototype.$P = function (path, data, done) {
-        var headers = {};
-        headers[AuthClient.CLIENT_APP_HEADER_FLD] = JSON.stringify(this.clientAppSettings);
         $J('POST', this.instance_url + path, data, done, this.connectOptions);
     };
     AuthClient.prototype.getConnectedApp = function (done) {
@@ -101,14 +99,6 @@ var AuthClient = (function () {
                 done(_this.getError(err), access);
         });
     };
-    AuthClient.prototype.verifyAccessToken = function (accessToken, done) {
-        var _this = this;
-        var params = accessToken;
-        this.$P("/services/authorize/verify_token", params, function (err, user) {
-            if (typeof done === 'function')
-                done(_this.getError(err), user);
-        });
-    };
     AuthClient.prototype.SSPR = function (username, done) {
         var _this = this;
         var params = { username: username };
@@ -146,3 +136,56 @@ var AuthClient = (function () {
     return AuthClient;
 }());
 exports.AuthClient = AuthClient;
+var TokenVerifier = (function () {
+    function TokenVerifier(options) {
+        this.options = options;
+    }
+    TokenVerifier.prototype.getError = function (httpErr) {
+        if (httpErr) {
+            if (httpErr.responseJSON)
+                return httpErr.responseJSON;
+            else if (httpErr.responseText) {
+                try {
+                    return JSON.parse(httpErr.responseText);
+                }
+                catch (e) {
+                    return httpErr.responseText;
+                }
+            }
+            else
+                return httpErr;
+        }
+        else
+            return null;
+    };
+    Object.defineProperty(TokenVerifier.prototype, "instance_url", {
+        get: function () { return (this.options && this.options.instance_url ? this.options.instance_url : ''); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TokenVerifier.prototype, "connectOptions", {
+        get: function () {
+            var ret = {
+                headers: {}
+            };
+            if (this.options && typeof this.options.rejectUnauthorized)
+                ret.rejectUnauthorized = this.options.rejectUnauthorized;
+            return ret;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    // POST
+    TokenVerifier.prototype.$P = function (path, data, done) {
+        $J('POST', this.instance_url + path, data, done, this.connectOptions);
+    };
+    TokenVerifier.prototype.verifyAccessToken = function (accessToken, done) {
+        var _this = this;
+        var params = accessToken;
+        this.$P("/services/token/verify", params, function (err, user) {
+            if (typeof done === 'function')
+                done(_this.getError(err), user);
+        });
+    };
+    return TokenVerifier;
+}());

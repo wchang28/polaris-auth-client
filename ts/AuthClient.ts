@@ -95,8 +95,6 @@ export class AuthClient {
 	}
 	// POST
 	private $P(path:string, data: any, done:(err:any, ret:any) => void) {
-		let headers = {};
-		headers[AuthClient.CLIENT_APP_HEADER_FLD] = JSON.stringify(this.clientAppSettings);
 		$J('POST', this.instance_url + path, data, done, this.connectOptions);
 	}
 	getConnectedApp(done:(err:any, connectedApp:IConnectedApp) => void) {
@@ -136,12 +134,6 @@ export class AuthClient {
 			if (typeof done === 'function') done(this.getError(err), access);
 		});
 	}
-	verifyAccessToken(accessToken: oauth2.AccessToken, done:(err:any, user:IAuthorizedUser) => void) {
-		let params = accessToken;
-		this.$P("/services/authorize/verify_token", params, (err, user) => {
-			if (typeof done === 'function') done(this.getError(err), user);
-		});
-	}
 
 	SSPR(username:string, done:(err:any, params:IResetPasswordParams) => void) {
 		let params: IUsernameParams = {username};
@@ -167,4 +159,41 @@ export class AuthClient {
 			if (typeof done === 'function') done(this.getError(err), data);
 		});			
 	};
+}
+
+class TokenVerifier {
+	constructor(public options:restIntf.ConnectOptions) {}
+	getError(httpErr) {
+		if (httpErr) {
+			if (httpErr.responseJSON)
+				return httpErr.responseJSON;
+			else if (httpErr.responseText) {
+				try {
+					return JSON.parse(httpErr.responseText);
+				} catch(e) {
+					return httpErr.responseText;
+				}
+			} else
+				return httpErr;
+		} else
+			return null;
+	}
+	get instance_url():string {return (this.options && this.options.instance_url ? this.options.instance_url : '');}
+	private get connectOptions(): restIntf.ApiCallOptions {
+		let ret: restIntf.ApiCallOptions = {
+			headers: {}
+		}
+		if (this.options && typeof this.options.rejectUnauthorized) ret.rejectUnauthorized = this.options.rejectUnauthorized;
+		return ret;
+	}
+	// POST
+	private $P(path:string, data: any, done:(err:any, ret:any) => void) {
+		$J('POST', this.instance_url + path, data, done, this.connectOptions);
+	}
+	verifyAccessToken(accessToken: oauth2.AccessToken, done:(err:any, user:IAuthorizedUser) => void) {
+		let params = accessToken;
+		this.$P("/services/token/verify", params, (err, user) => {
+			if (typeof done === 'function') done(this.getError(err), user);
+		});
+	}
 }
