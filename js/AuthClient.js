@@ -1,5 +1,6 @@
 "use strict";
-var $node = require('rest-node');
+Object.defineProperty(exports, "__esModule", { value: true });
+var $node = require("rest-node");
 var $J = $node.get().$J;
 var AuthClient = (function () {
     function AuthClient(options, clientAppSettings) {
@@ -132,9 +133,9 @@ var AuthClient = (function () {
         });
     };
     ;
-    AuthClient.CLIENT_APP_HEADER_FLD = 'x-client-app';
     return AuthClient;
 }());
+AuthClient.CLIENT_APP_HEADER_FLD = 'x-client-app';
 exports.AuthClient = AuthClient;
 var TokenVerifier = (function () {
     function TokenVerifier(options) {

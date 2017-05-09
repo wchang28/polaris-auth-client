@@ -1,6 +1,6 @@
 {
   "name": "polaris-auth-client",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Polaris Authentication Client Library",
   "main": "./js/AuthClient.js",
   "typings": "./js/AuthClient.d.ts",
@@ -15,7 +15,7 @@
   "author": "Wen Chang",
   "license": "MIT",
   "dependencies": {
-    "@types/node": "^6.0.41",
+    "@types/node": "^6.0.73",
     "oauth2": "git+https://github.com/wchang28/oauth2.git",
     "rest-api-interfaces": "git+https://github.com/wchang28/rest-api-interfaces.git",
     "rest-node": "git+https://github.com/wchang28/rest-node.git"
