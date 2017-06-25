@@ -35,7 +35,7 @@ var AuthClient = (function () {
     AuthClient.prototype.$P = function (path, data) {
         return $J('POST', this.instance_url + path, data, this.connectOptions).then(function (restReturn) { return restReturn.data; });
     };
-    AuthClient.prototype.getConnectedApp = function (done) {
+    AuthClient.prototype.getConnectedApp = function () {
         return this.$P("/services/authorize/get_connected_app", {});
     };
     AuthClient.prototype.userLogin = function (response_type, username, password, signUpUserForApp) {

@@ -82,7 +82,7 @@ export class AuthClient {
 	private $P(path:string, data: any) : Promise<any> {
 		return $J('POST', this.instance_url + path, data, this.connectOptions).then((restReturn: restIntf.RESTReturn) => restReturn.data);
 	}
-	getConnectedApp(done:(err:any, connectedApp:IConnectedApp) => void) : Promise<IConnectedApp> {
+	getConnectedApp() : Promise<IConnectedApp> {
 		return this.$P("/services/authorize/get_connected_app", {});
 	}
 	userLogin(response_type:oauth2.AuthResponseType, username:string, password:string, signUpUserForApp:boolean) : Promise<ILoginResult> {

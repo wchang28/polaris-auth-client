@@ -59,7 +59,7 @@ export declare class AuthClient {
     static getClientAppHeaderField(): string;
     private readonly connectOptions;
     private $P(path, data);
-    getConnectedApp(done: (err: any, connectedApp: IConnectedApp) => void): Promise<IConnectedApp>;
+    getConnectedApp(): Promise<IConnectedApp>;
     userLogin(response_type: oauth2.AuthResponseType, username: string, password: string, signUpUserForApp: boolean): Promise<ILoginResult>;
     automationLogin(username: string, password: string): Promise<ILoginResult>;
     getAccessFromAuthCode(code: string): Promise<oauth2.Access>;
