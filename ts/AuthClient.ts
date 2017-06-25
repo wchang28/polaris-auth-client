@@ -114,7 +114,7 @@ export class AuthClient {
 		let params: IUsernameParams = {username};
 		return this.$P("/services/authorize/sspr", params);
 	}
-	resetPassword(pin:string, done:(err:any) => void) : Promise<any> {
+	resetPassword(pin:string) : Promise<any> {
 		let params:IResetPasswordParams = {pin};
 		return this.$P("/services/authorize/reset_password", params);
 	}

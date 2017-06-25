@@ -66,7 +66,7 @@ var AuthClient = (function () {
         var params = { username: username };
         return this.$P("/services/authorize/sspr", params);
     };
-    AuthClient.prototype.resetPassword = function (pin, done) {
+    AuthClient.prototype.resetPassword = function (pin) {
         var params = { pin: pin };
         return this.$P("/services/authorize/reset_password", params);
     };

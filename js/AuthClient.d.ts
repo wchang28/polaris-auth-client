@@ -65,7 +65,7 @@ export declare class AuthClient {
     getAccessFromAuthCode(code: string): Promise<oauth2.Access>;
     refreshToken(refresh_token: string): Promise<oauth2.Access>;
     SSPR(username: string): Promise<IResetPasswordParams>;
-    resetPassword(pin: string, done: (err: any) => void): Promise<any>;
+    resetPassword(pin: string): Promise<any>;
     lookupUser(username: string): Promise<IAuthorizedUser>;
     signUpNewUser(accountOptions: IAccountOptions): Promise<IAuthorizedUser>;
 }
