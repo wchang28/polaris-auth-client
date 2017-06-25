@@ -17,24 +17,6 @@ var AuthClient = (function () {
         enumerable: true,
         configurable: true
     });
-    AuthClient.prototype.getError = function (httpErr) {
-        if (httpErr) {
-            if (httpErr.responseJSON)
-                return httpErr.responseJSON;
-            else if (httpErr.responseText) {
-                try {
-                    return JSON.parse(httpErr.responseText);
-                }
-                catch (e) {
-                    return httpErr.responseText;
-                }
-            }
-            else
-                return httpErr;
-        }
-        else
-            return null;
-    };
     AuthClient.getClientAppHeaderField = function () { return AuthClient.CLIENT_APP_HEADER_FLD; };
     Object.defineProperty(AuthClient.prototype, "connectOptions", {
         get: function () {
@@ -50,87 +32,51 @@ var AuthClient = (function () {
         configurable: true
     });
     // POST
-    AuthClient.prototype.$P = function (path, data, done) {
-        $J('POST', this.instance_url + path, data, done, this.connectOptions);
+    AuthClient.prototype.$P = function (path, data) {
+        return $J('POST', this.instance_url + path, data, this.connectOptions).then(function (restReturn) { return restReturn.data; });
     };
     AuthClient.prototype.getConnectedApp = function (done) {
-        var _this = this;
-        this.$P("/services/authorize/get_connected_app", {}, function (err, connectedApp) {
-            if (typeof done === 'function')
-                done(_this.getError(err), connectedApp);
-        });
+        return this.$P("/services/authorize/get_connected_app", {});
     };
-    AuthClient.prototype.userLogin = function (response_type, username, password, signUpUserForApp, done) {
-        var _this = this;
+    AuthClient.prototype.userLogin = function (response_type, username, password, signUpUserForApp) {
         var params = {
             response_type: response_type,
             username: username,
             password: password,
             signUpUserForApp: signUpUserForApp
         };
-        this.$P("/services/authorize/user_login", params, function (err, ret) {
-            if (typeof done === 'function')
-                done(_this.getError(err), ret);
-        });
+        return this.$P("/services/authorize/user_login", params);
     };
-    AuthClient.prototype.automationLogin = function (username, password, done) {
-        var _this = this;
+    AuthClient.prototype.automationLogin = function (username, password) {
         var params = {
             username: username,
             password: password
         };
-        this.$P("/services/authorize/automation_login", params, function (err, ret) {
-            if (typeof done === 'function')
-                done(_this.getError(err), ret);
-        });
+        return this.$P("/services/authorize/automation_login", params);
     };
-    AuthClient.prototype.getAccessFromAuthCode = function (code, done) {
-        var _this = this;
+    AuthClient.prototype.getAccessFromAuthCode = function (code) {
         var params = { code: code };
-        this.$P("/services/authorize/get_access_from_auth_code", params, function (err, access) {
-            if (typeof done === 'function')
-                done(_this.getError(err), access);
-        });
+        return this.$P("/services/authorize/get_access_from_auth_code", params);
     };
-    AuthClient.prototype.refreshToken = function (refresh_token, done) {
-        var _this = this;
+    AuthClient.prototype.refreshToken = function (refresh_token) {
         var params = { refresh_token: refresh_token };
-        this.$P("/services/authorize/refresh_token", params, function (err, access) {
-            if (typeof done === 'function')
-                done(_this.getError(err), access);
-        });
+        return this.$P("/services/authorize/refresh_token", params);
     };
-    AuthClient.prototype.SSPR = function (username, done) {
-        var _this = this;
+    AuthClient.prototype.SSPR = function (username) {
         var params = { username: username };
-        this.$P("/services/authorize/sspr", params, function (err, data) {
-            if (typeof done === 'function')
-                done(_this.getError(err), data);
-        });
+        return this.$P("/services/authorize/sspr", params);
     };
     AuthClient.prototype.resetPassword = function (pin, done) {
-        var _this = this;
         var params = { pin: pin };
-        this.$P("/services/authorize/reset_password", params, function (err, data) {
-            if (typeof done === 'function')
-                done(_this.getError(err));
-        });
+        return this.$P("/services/authorize/reset_password", params);
     };
-    AuthClient.prototype.lookupUser = function (username, done) {
-        var _this = this;
+    AuthClient.prototype.lookupUser = function (username) {
         var params = { username: username };
-        this.$P("/services/authorize/lookup_user", params, function (err, data) {
-            if (typeof done === 'function')
-                done(_this.getError(err), data);
-        });
+        return this.$P("/services/authorize/lookup_user", params);
     };
-    AuthClient.prototype.signUpNewUser = function (accountOptions, done) {
-        var _this = this;
+    AuthClient.prototype.signUpNewUser = function (accountOptions) {
         var params = accountOptions;
-        this.$P("/services/authorize/sign_up_new_user", params, function (err, data) {
-            if (typeof done === 'function')
-                done(_this.getError(err), data);
-        });
+        return this.$P("/services/authorize/sign_up_new_user", params);
     };
     ;
     return AuthClient;
@@ -177,16 +123,12 @@ var TokenVerifier = (function () {
         configurable: true
     });
     // POST
-    TokenVerifier.prototype.$P = function (path, data, done) {
-        $J('POST', this.instance_url + path, data, done, this.connectOptions);
+    TokenVerifier.prototype.$P = function (path, data) {
+        return $J('POST', this.instance_url + path, data, this.connectOptions).then(function (restReturn) { return restReturn.data; });
     };
-    TokenVerifier.prototype.verifyAccessToken = function (accessToken, done) {
-        var _this = this;
+    TokenVerifier.prototype.verifyAccessToken = function (accessToken) {
         var params = accessToken;
-        this.$P("/services/token/verify", params, function (err, user) {
-            if (typeof done === 'function')
-                done(_this.getError(err), user);
-        });
+        return this.$P("/services/token/verify", params);
     };
     return TokenVerifier;
 }());

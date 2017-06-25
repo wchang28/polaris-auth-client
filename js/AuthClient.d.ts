@@ -56,19 +56,18 @@ export declare class AuthClient {
     constructor(options: restIntf.ConnectOptions, clientAppSettings: oauth2.ClientAppSettings);
     readonly instance_url: string;
     readonly redirect_uri: string;
-    getError(httpErr: any): any;
     static getClientAppHeaderField(): string;
     private readonly connectOptions;
-    private $P(path, data, done);
-    getConnectedApp(done: (err: any, connectedApp: IConnectedApp) => void): void;
-    userLogin(response_type: oauth2.AuthResponseType, username: string, password: string, signUpUserForApp: boolean, done: (err: any, ret: ILoginResult) => void): void;
-    automationLogin(username: string, password: string, done: (err: any, ret: ILoginResult) => void): void;
-    getAccessFromAuthCode(code: string, done: (err: any, access: oauth2.Access) => void): void;
-    refreshToken(refresh_token: string, done: (err: any, access: oauth2.Access) => void): void;
-    SSPR(username: string, done: (err: any, params: IResetPasswordParams) => void): void;
-    resetPassword(pin: string, done: (err: any) => void): void;
-    lookupUser(username: string, done: (err: any, user: IAuthorizedUser) => void): void;
-    signUpNewUser(accountOptions: IAccountOptions, done: (err: any, user: IAuthorizedUser) => void): void;
+    private $P(path, data);
+    getConnectedApp(done: (err: any, connectedApp: IConnectedApp) => void): Promise<IConnectedApp>;
+    userLogin(response_type: oauth2.AuthResponseType, username: string, password: string, signUpUserForApp: boolean): Promise<ILoginResult>;
+    automationLogin(username: string, password: string): Promise<ILoginResult>;
+    getAccessFromAuthCode(code: string): Promise<oauth2.Access>;
+    refreshToken(refresh_token: string): Promise<oauth2.Access>;
+    SSPR(username: string): Promise<IResetPasswordParams>;
+    resetPassword(pin: string, done: (err: any) => void): Promise<any>;
+    lookupUser(username: string): Promise<IAuthorizedUser>;
+    signUpNewUser(accountOptions: IAccountOptions): Promise<IAuthorizedUser>;
 }
 export declare class TokenVerifier {
     options: restIntf.ConnectOptions;
@@ -76,6 +75,6 @@ export declare class TokenVerifier {
     getError(httpErr: any): any;
     readonly instance_url: string;
     private readonly connectOptions;
-    private $P(path, data, done);
-    verifyAccessToken(accessToken: oauth2.AccessToken, done: (err: any, user: IAuthorizedUser) => void): void;
+    private $P(path, data);
+    verifyAccessToken(accessToken: oauth2.AccessToken): Promise<IAuthorizedUser>;
 }

@@ -69,21 +69,6 @@ export class AuthClient {
 	constructor(public options:restIntf.ConnectOptions, public clientAppSettings:oauth2.ClientAppSettings) {}
 	get instance_url():string {return (this.options && this.options.instance_url ? this.options.instance_url : '');}
 	get redirect_uri():string {return (this.clientAppSettings && this.clientAppSettings.redirect_uri ? this.clientAppSettings.redirect_uri : null);}
-	getError(httpErr) {
-		if (httpErr) {
-			if (httpErr.responseJSON)
-				return httpErr.responseJSON;
-			else if (httpErr.responseText) {
-				try {
-					return JSON.parse(httpErr.responseText);
-				} catch(e) {
-					return httpErr.responseText;
-				}
-			} else
-				return httpErr;
-		} else
-			return null;
-	}
 	static getClientAppHeaderField():string {return AuthClient.CLIENT_APP_HEADER_FLD;}
 	private get connectOptions(): restIntf.ApiCallOptions {
 		let ret: restIntf.ApiCallOptions = {
@@ -94,70 +79,52 @@ export class AuthClient {
 		return ret;
 	}
 	// POST
-	private $P(path:string, data: any, done:(err:any, ret:any) => void) {
-		$J('POST', this.instance_url + path, data, done, this.connectOptions);
+	private $P(path:string, data: any) : Promise<any> {
+		return $J('POST', this.instance_url + path, data, this.connectOptions).then((restReturn: restIntf.RESTReturn) => restReturn.data);
 	}
-	getConnectedApp(done:(err:any, connectedApp:IConnectedApp) => void) {
-		this.$P("/services/authorize/get_connected_app", {}, (err:any, connectedApp: IConnectedApp) => {
-			if (typeof done === 'function') done(this.getError(err), connectedApp);
-		});
+	getConnectedApp(done:(err:any, connectedApp:IConnectedApp) => void) : Promise<IConnectedApp> {
+		return this.$P("/services/authorize/get_connected_app", {});
 	}
-	userLogin(response_type:oauth2.AuthResponseType, username:string, password:string, signUpUserForApp:boolean, done:(err:any, ret: ILoginResult) => void) {
+	userLogin(response_type:oauth2.AuthResponseType, username:string, password:string, signUpUserForApp:boolean) : Promise<ILoginResult> {
 		let params: IUserLoginParams = {
 			response_type : response_type
 			,username: username
 			,password: password
 			,signUpUserForApp: signUpUserForApp
 		};
-		this.$P("/services/authorize/user_login", params, (err:any, ret: ILoginResult) => {
-			if (typeof done === 'function') done(this.getError(err), ret);
-		});
+		return this.$P("/services/authorize/user_login", params);
 	}
-	automationLogin(username:string, password:string, done:(err:any, ret: ILoginResult) => void) {
+	automationLogin(username:string, password:string) : Promise<ILoginResult> {
 		let params: IAutomationLoginParams = {
 			username: username
 			,password: password
 		};
-		this.$P("/services/authorize/automation_login", params, (err:any, ret: ILoginResult) => {
-			if (typeof done === 'function') done(this.getError(err), ret);
-		});
+		return this.$P("/services/authorize/automation_login", params);
 	}
-	getAccessFromAuthCode(code:string, done:(err:any, access:oauth2.Access) => void) {
+	getAccessFromAuthCode(code:string) : Promise<oauth2.Access> {
 		let params: IGetAccessFromCodeParams = {code: code};
-		this.$P("/services/authorize/get_access_from_auth_code", params, (err, access:oauth2.Access) => {
-			if (typeof done === 'function') done(this.getError(err), access);
-		});
+		return this.$P("/services/authorize/get_access_from_auth_code", params);
 	}
-	refreshToken(refresh_token:string, done:(err:any, access:oauth2.Access) => void) {
+	refreshToken(refresh_token:string) : Promise<oauth2.Access> {
 		let params:IRefreshTokenParams = {refresh_token : refresh_token};
-		this.$P("/services/authorize/refresh_token", params, (err, access:oauth2.Access) => {
-			if (typeof done === 'function') done(this.getError(err), access);
-		});
+		return this.$P("/services/authorize/refresh_token", params);
 	}
 
-	SSPR(username:string, done:(err:any, params:IResetPasswordParams) => void) {
+	SSPR(username:string) : Promise<IResetPasswordParams> {
 		let params: IUsernameParams = {username};
-		this.$P("/services/authorize/sspr", params, (err, data) => {
-			if (typeof done === 'function') done(this.getError(err), data);
-		});
+		return this.$P("/services/authorize/sspr", params);
 	}
-	resetPassword(pin:string, done:(err:any) => void) {
+	resetPassword(pin:string, done:(err:any) => void) : Promise<any> {
 		let params:IResetPasswordParams = {pin};
-		this.$P("/services/authorize/reset_password", params, (err, data) => {
-			if (typeof done === 'function') done(this.getError(err));
-		});
+		return this.$P("/services/authorize/reset_password", params);
 	}
-	lookupUser(username:string, done:(err:any, user:IAuthorizedUser) => void) {
+	lookupUser(username:string) : Promise<IAuthorizedUser> {
 		let params: IUsernameParams = {username};
-		this.$P("/services/authorize/lookup_user", params, (err, data) => {
-			if (typeof done === 'function') done(this.getError(err), data);
-		});		
+		return this.$P("/services/authorize/lookup_user", params);		
 	}
-	signUpNewUser(accountOptions:IAccountOptions, done:(err:any, user:IAuthorizedUser) => void) {
+	signUpNewUser(accountOptions:IAccountOptions) : Promise<IAuthorizedUser> {
 		let params = accountOptions;
-		this.$P("/services/authorize/sign_up_new_user", params, (err, data) => {
-			if (typeof done === 'function') done(this.getError(err), data);
-		});			
+		return this.$P("/services/authorize/sign_up_new_user", params);			
 	};
 }
 
@@ -187,13 +154,11 @@ export class TokenVerifier {
 		return ret;
 	}
 	// POST
-	private $P(path:string, data: any, done:(err:any, ret:any) => void) {
-		$J('POST', this.instance_url + path, data, done, this.connectOptions);
+	private $P(path:string, data: any) : Promise<any> {
+		return $J('POST', this.instance_url + path, data, this.connectOptions).then((restReturn: restIntf.RESTReturn) => restReturn.data);
 	}
-	verifyAccessToken(accessToken: oauth2.AccessToken, done:(err:any, user:IAuthorizedUser) => void) {
+	verifyAccessToken(accessToken: oauth2.AccessToken) : Promise<IAuthorizedUser> {
 		let params = accessToken;
-		this.$P("/services/token/verify", params, (err, user) => {
-			if (typeof done === 'function') done(this.getError(err), user);
-		});
+		return this.$P("/services/token/verify", params);
 	}
 }
